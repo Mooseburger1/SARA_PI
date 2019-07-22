@@ -3,9 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 //error hanlder
@@ -35,8 +32,6 @@ func main() {
 		l := GetTemporaryLink(p[i])
 		links = append(links, l)
 	}
-	fmt.Println(links)
-	router := mux.NewRouter()
 
-	log.Fatal(http.ListenAndServe(":8000", router))
+	Serve()
 }
