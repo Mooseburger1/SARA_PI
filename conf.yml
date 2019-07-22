@@ -1,6 +1,6 @@
 token: Bearer Gh51SZ51v1YAAAAAAAAIZGIHGInvOTsgbHuOY7BG3JzqhnNJG_1mhn6_W1hRNS0f
-app_key: [Enter app key here]
-app_secret: [Enter app secret here]
+app_key: q2lp6ckffh9tqv8
+app_secret: fmdiul94yejfffe
 
 get_link_api_url: https://api.dropboxapi.com/2/files/get_temporary_link
 list_link_api_url: https://api.dropboxapi.com/2/files/list_folder
