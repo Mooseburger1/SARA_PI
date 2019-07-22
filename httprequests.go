@@ -24,6 +24,7 @@ type ImageMetaData struct {
 	Name string `json:"name"`
 }
 
+// DropboxHTTPTempLink used to unmarshal dropbox http temp link request
 type DropboxHTTPTempLink struct {
 	Link string `json:"link"`
 }
