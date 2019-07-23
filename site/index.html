@@ -5,6 +5,9 @@
 <body class="back">
 <div>
 <h1>hi</h1>
-<img src="{{ .Image2 }}">
+
+{{range .Images}}
+    <img src="{{.}}">
+{{end}}
 </div>
 </body>
