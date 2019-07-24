@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -33,10 +34,9 @@ type DropboxHTTPTempLink struct {
 // API URL. It then returns a slice of image names and paths contained in the Dropbox "/images"
 // folder. All images must be contained in an "images" folder within the Dropbox application
 // account in order for this function to return the list.
-func ListImagesFromDropbox() []string {
+func ListImagesFromDropbox(out chan<- string, status chan<- int64) {
 	// Initialize variables
 	var result DropboxHTTPListResponse
-	paths := []string{}
 	client := http.Client{}
 
 	//Construct the request boddy to be passed with the HTTP request
@@ -54,45 +54,54 @@ func ListImagesFromDropbox() []string {
 	check(err)
 
 	//Make HTTP POST request
-	resp, err := client.Do(request)
-	check(err)
+	for {
+		resp, err := client.Do(request)
+		check(err)
 
-	defer resp.Body.Close()
+		defer resp.Body.Close()
 
-	// Unmarshal the response into result
-	json.NewDecoder(resp.Body).Decode(&result)
+		// Unmarshal the response into result
+		json.NewDecoder(resp.Body).Decode(&result)
 
-	// Iterate through the array of image paths and append them to list
-	for i := 0; i < len(result.Entries); i++ {
-		paths = append(paths, result.Entries[i].Path)
+		status <- int64(len(result.Entries))
+
+		// Iterate through the array of image paths and append them to list
+		for i := 0; i < len(result.Entries); i++ {
+			out <- result.Entries[i].Path
+
+		}
+
 	}
 
-	return paths
 }
 
 // GetTemporaryLink takes the path of an image in Dropbox and returns a temporary link to that artifact in Dropbox
-func GetTemporaryLink(path string) string {
-
+func GetTemporaryLink(in chan<- DropboxHTTPTempLink, out <-chan string) {
+	var path string
 	var results DropboxHTTPTempLink
 
-	body, err := json.Marshal(map[string]string{
-		"path": path})
+	for path = range out {
+		fmt.Println("this is what i'm receiving: ", path)
+		body, err := json.Marshal(map[string]string{
+			"path": path})
 
-	check(err)
+		check(err)
 
-	client := http.Client{}
+		client := http.Client{}
 
-	request, err := http.NewRequest("POST", Getlink, bytes.NewBuffer(body))
-	request.Header.Set("Authorization", Token)
-	request.Header.Set("Content-Type", "application/json")
+		request, err := http.NewRequest("POST", Getlink, bytes.NewBuffer(body))
+		request.Header.Set("Authorization", Token)
+		request.Header.Set("Content-Type", "application/json")
 
-	check(err)
+		check(err)
 
-	response, err := client.Do(request)
-	check(err)
+		response, err := client.Do(request)
+		check(err)
 
-	json.NewDecoder(response.Body).Decode(&results)
+		json.NewDecoder(response.Body).Decode(&results)
 
-	return results.Link
+		fmt.Println("this is what i'm sending: ", results.Link)
+		in <- results
 
+	}
 }

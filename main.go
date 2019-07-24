@@ -15,23 +15,22 @@ func check(e error) {
 	}
 }
 
+// Go routine channels for concurrency
+var in = make(chan DropboxHTTPTempLink, 100)
+var out = make(chan string, 100)
+var status = make(chan int64)
+
 func main() {
 
-	var links []string
 	// Initialize configs
 	Getconfigs()
 
 	// Get list of image files from DropBox
-	p := ListImagesFromDropbox()
-	if len(p) < 1 {
-		fmt.Println("List of Images From Dropbox is 0\nAre there Images in the /images folder?")
-	}
+	go ListImagesFromDropbox(out, status)
 
 	// Get temporary links from list of image files
-	for i := 0; i < len(p); i++ {
-		l := GetTemporaryLink(p[i])
-		links = append(links, l)
-	}
+	go GetTemporaryLink(in, out)
 
+	// Serve up html
 	Serve()
 }
