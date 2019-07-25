@@ -32,5 +32,5 @@ func main() {
 	go GetTemporaryLink(in, out)
 
 	// Serve up html
-	Serve()
+	Serve2()
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -81,7 +80,6 @@ func GetTemporaryLink(in chan<- DropboxHTTPTempLink, out <-chan string) {
 	var results DropboxHTTPTempLink
 
 	for path = range out {
-		fmt.Println("this is what i'm receiving: ", path)
 		body, err := json.Marshal(map[string]string{
 			"path": path})
 
@@ -97,10 +95,8 @@ func GetTemporaryLink(in chan<- DropboxHTTPTempLink, out <-chan string) {
 
 		response, err := client.Do(request)
 		check(err)
-
 		json.NewDecoder(response.Body).Decode(&results)
 
-		fmt.Println("this is what i'm sending: ", results.Link)
 		in <- results
 
 	}
