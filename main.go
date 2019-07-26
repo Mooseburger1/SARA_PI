@@ -31,6 +31,6 @@ func main() {
 	// Get temporary links from list of image files
 	go GetTemporaryLink(in, out)
 
-	// Serve up html
-	Serve2()
+	// Start the Server
+	Server()
 }
