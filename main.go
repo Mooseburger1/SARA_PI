@@ -16,20 +16,17 @@ func check(e error) {
 }
 
 // Go routine channels for concurrency
-var in = make(chan DropboxHTTPTempLink, 100)
-var out = make(chan string, 100)
-var status = make(chan int64)
+var in = make(chan DropboxHTTPTempLink)
+var out = make(chan string)
+var numImages = make(chan int64)
+var imgLinks = make(chan struct {
+	Images []string
+})
 
 func main() {
 
 	// Initialize configs
 	Getconfigs()
-
-	// Get list of image files from DropBox
-	go ListImagesFromDropbox(out, status)
-
-	// Get temporary links from list of image files
-	go GetTemporaryLink(in, out)
 
 	// Start the Server
 	Server()

@@ -62,7 +62,7 @@ func ListImagesFromDropbox(out chan<- string, status chan<- int64) {
 		// Unmarshal the response into result
 		json.NewDecoder(resp.Body).Decode(&result)
 
-		status <- int64(len(result.Entries))
+		numImages <- int64(len(result.Entries))
 
 		// Iterate through the array of image paths and append them to list
 		for i := 0; i < len(result.Entries); i++ {
@@ -96,7 +96,6 @@ func GetTemporaryLink(in chan<- DropboxHTTPTempLink, out <-chan string) {
 		response, err := client.Do(request)
 		check(err)
 		json.NewDecoder(response.Body).Decode(&results)
-
 		in <- results
 
 	}
