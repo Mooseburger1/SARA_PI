@@ -43,6 +43,8 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	check(err)
 }
 
+//Images compiles all individual dropbox links and creates a struct to pass
+//the links to the html templates for rendering
 func Images() {
 
 	var links []string
@@ -64,6 +66,8 @@ func Images() {
 	imgLinks <- data
 }
 
+//ImageHandler serves up the slide show html template
+//The imagelinks come across the imgLinks channel
 func ImageHandler(w http.ResponseWriter, r *http.Request) {
 	data := <-imgLinks
 	fmt.Println("I've got the links! Serving template now!")
