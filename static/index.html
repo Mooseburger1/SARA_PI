@@ -7,35 +7,78 @@
             <meta content="text/html; charset=iso-8859-2" http-equiv="Content-Type">
             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
             <link rel="stylesheet" type="text/css" href="/css/mystyles.css">
-            <style>
-                .mySlides {display:none;}
-            </style>
+            <style>.mySlides {display:none;}</style>
+            <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
     </head>
 
     <body>
-        
-        <h2>Automatic Slideshow</h2>
-        <div class="w3-content w3-section" style="max-width:500px">
-            {{range .Images}}
-            <img class="mySlides w3-animate-fading" src="{{.}}" style="width:100%">
-            {{end}}
+        <div id="wrapper">
+            <div class="slideshow-row">
+                    {{range .Images}}
+                    <img class="myimg mySlides w3-animate-fading" src="{{.}}">
+                    {{end}}
+            </div>
+
+
+            <div class="calendar-row">
+                <table id="calendar">
+                    <thead>
+                    <tr>
+                        <td class="date-header">S</td>
+                        <td class="date-header">M</td>
+                        <td class="date-header">T</td>
+                        <td class="date-header">W</td>
+                        <td class="date-header">T</td>
+                        <td class="date-header">F</td>
+                        <td class="date-header">S</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="calendar-day">1</td>
+                        <td class="calendar-day">2</td>
+                        <td class="calendar-day">3</td>
+                        <td class="calendar-day">4</td>
+                        <td class="calendar-day">5</td>
+                        <td class="calendar-day">6</td>
+                        <td class="calendar-day">7</td>
+                    </tr>
+                    <tr>
+                        <td class="event-data">
+                        <ul>
+                            <li>event event event event event event event event event</li>
+                        </ul>
+                        </td>
+                        <td class="event-data" valign="top"><ul><li>event</li></ul></td>
+                        <td class="event-data" valign="top"><ul><li>event</li></ul></td>
+                        <td class="event-data" valign="top"><ul><li>event</li></ul></td>
+                        <td class="event-data" valign="top"><ul><li>event</li></ul></td>
+                        <td class="event-data" valign="top"><ul><li>event</li></ul></td>
+                        <td class="event-data" valign="top"><ul><li>event</li></ul></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <script>
+                var myIndex = 0;
+                carousel();
+                
+                function carousel() {
+                var i;
+                var x = document.getElementsByClassName("mySlides");
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "none";  
+                }
+                myIndex++;
+                if (myIndex > x.length) {myIndex = 1}    
+                x[myIndex-1].style.display = "block";  
+                setTimeout(carousel, 9000); // Change image every 2 seconds
+                }
+            </script> 
         </div>
-        <script>
-            var myIndex = 0;
-            carousel();
-            
-            function carousel() {
-            var i;
-            var x = document.getElementsByClassName("mySlides");
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";  
-            }
-            myIndex++;
-            if (myIndex > x.length) {myIndex = 1}    
-            x[myIndex-1].style.display = "block";  
-            setTimeout(carousel, 9000); // Change image every 2 seconds
-            }
-        </script> 
     </body>
  </html>
     
